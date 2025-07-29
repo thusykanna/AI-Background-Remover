@@ -41,4 +41,6 @@ const steps = [
     },
 ];
 
+export const categories = ["People", "Products", "Animals", "Cars", "Graphics"];
+
 export default steps;

@@ -1,4 +1,5 @@
 import BgRemovalSteps from "../components/BgRemovalSteps";
+import BgSlider from "../components/BgSlider";
 import Header from "../components/Header";
 
 const Home = () => {
@@ -11,6 +12,7 @@ const Home = () => {
             <BgRemovalSteps/>
 
             {/* Slider section */}
+            <BgSlider/>
 
             {/* Buy credits plan */}
 
