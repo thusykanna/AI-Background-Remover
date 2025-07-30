@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { assets, categories } from "../assets/assets";
+import { categories, assets } from "../assets/assets";
 
 const BgSlider = () => {
     const [sliderPosition, setSliderPosition] = useState(50);
@@ -39,7 +39,7 @@ const BgSlider = () => {
           <img
             src={assets.people_org}
             alt="original image"
-            style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+            style={{ clipPath: `inset(0 ${100.3 - sliderPosition}% 0 0)` }}
           />
           <img
             src={assets.people}
