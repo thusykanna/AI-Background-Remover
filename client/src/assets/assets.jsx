@@ -3,13 +3,15 @@ import video_banner from './home-page-banner.mp4';
 import people from "./people.png";
 import people_org from './people-org.png';
 import slide_icon from './slide_icon.svg';
+import credits from './credits.png';
 
 export const assets = {
     logo,
     video_banner,
     people,
     people_org,
-    slide_icon
+    slide_icon,
+    credits
 }
 
 export const steps = [
