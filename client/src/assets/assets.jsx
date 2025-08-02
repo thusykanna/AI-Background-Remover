@@ -95,6 +95,26 @@ export const testimonials = [
     }
 ];
 
+export const FOOTER_CONSTANTS = [
+    {
+      url: "https://facebook.com",
+      logo: "https://img.icons8.com/fluent/30/000000/facebook-new.png"
+    },
+    {
+      url: "https://linkedin.com",
+      logo: "https://img.icons8.com/fluent/30/000000/linkedin-2.png"
+    },
+    {
+      url: "https://instagram.com",
+      logo: "https://img.icons8.com/fluent/30/000000/instagram-new.png"
+    },
+    {
+      url: "https://twitter.com",
+      logo: "https://img.icons8.com/fluent/30/000000/twitter.png"
+    }
+  ];
+  
+
 export const categories = ["People", "Products", "Animals", "Cars", "Graphics"];
 
 export default steps;
