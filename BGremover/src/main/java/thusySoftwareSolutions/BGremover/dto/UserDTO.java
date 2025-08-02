@@ -3,11 +3,11 @@ package thusySoftwareSolutions.BGremover.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-// import lombok.NoArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-// @NoArgsConstructor
+@NoArgsConstructor
 @Builder
 public class UserDTO {
     

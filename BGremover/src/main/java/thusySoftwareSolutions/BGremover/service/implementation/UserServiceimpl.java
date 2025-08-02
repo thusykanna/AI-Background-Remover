@@ -27,7 +27,33 @@ public class UserServiceimpl implements UserService {
             if (userDTO.getCredits() != null) {
                 existingUser.setCredits(userDTO.getCredits());
             }
-        } 
+            existingUser = userRepository.save(existingUser);
+            mapToDTO(existingUser);
+        }
+        UserEntity newUser = mapToEntity(userDTO);
+        userRepository.save(newUser);
+        return mapToDTO(newUser);
     }
-    
+
+    private UserDTO mapToDTO(UserEntity newUser) {
+        return UserDTO.builder()
+                .clerkId(newUser.getClerkId())
+                .credits(newUser.getCredits())
+                .email(newUser.getEmail())
+                .firstname(newUser.getFirstname())
+                .lastname(newUser.getLastname())
+                // .photoUrl(newUser.getPhotoUrl())
+                .build();
+    }
+
+    private UserEntity mapToEntity(UserDTO userDTO) {
+        return UserEntity.builder()
+                .clerkId(userDTO.getClerkId())
+                .email(userDTO.getEmail())
+                .firstname(userDTO.getFirstname())
+                .lastname(userDTO.getLastname())
+                .photoUrl(userDTO.getPhotoUrl())
+                .build();
+    }
+
 }
