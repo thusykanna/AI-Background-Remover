@@ -21,7 +21,7 @@ const Pricing = () => {
               key={plan.id}
               className={`relative pt-6 p-6
                   ${plan.popular
-                    ? 'backdrop-blur-lg rounded-2xl' : 'border-gray-800 rounded-xl'} bg-[#1A1A1A] hover:transform hover:-translate-y-2 transition-all duration-300`}>
+                  ? 'backdrop-blur-lg rounded-2xl' : 'border-gray-800 rounded-xl'} bg-[#1A1A1A] hover:transform hover:-translate-y-2 transition-all duration-300`}>
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-purple-600 px-3 py-1 text-white text-sm font-semibold">
                   Most Popular
@@ -31,7 +31,7 @@ const Pricing = () => {
                 <h3 className="text-2xl font-bold text-white">{plan.name}</h3>
                 <div className="mt-4 text-center">
                   <span className="text-4xl text-violet-400 font-bold">
-                    &#8377;{plan.price}
+                    {"Rs. " + plan.price}
                   </span>
                 </div>
               </div>
