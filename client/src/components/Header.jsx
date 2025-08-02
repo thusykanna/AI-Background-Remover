@@ -1,5 +1,6 @@
 import React from 'react'
 import { assets } from '../assets/assets'
+import toast from 'react-hot-toast'
 
 const Header = () => {
     return (
