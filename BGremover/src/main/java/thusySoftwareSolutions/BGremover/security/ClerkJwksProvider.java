@@ -2,15 +2,17 @@ package thusySoftwareSolutions.BGremover.security;
 
 import java.math.BigInteger;
 import java.net.URL;
-import java.security.Key;
+import java.security.KeyFactory;
 import java.security.PublicKey;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
@@ -61,7 +63,7 @@ public class ClerkJwksProvider {
         BigInteger modulusBigInt = new BigInteger(1, modulusBytes);
         BigInteger exponentBigInt = new BigInteger(1, exponentBytes);
 
-        RSAPublicKeySpec spec = new RSAKeySpec(modulusBigInt, exponentBigInt);
+        RSAPublicKeySpec spec = new RSAPublicKeySpec(modulusBigInt, exponentBigInt);
         KeyFactory factory = KeyFactory.getInstance("RSA");
 
         return factory.generatePublic(spec);
