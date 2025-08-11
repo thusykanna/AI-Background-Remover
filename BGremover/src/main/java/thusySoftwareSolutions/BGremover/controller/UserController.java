@@ -1,7 +1,8 @@
 package thusySoftwareSolutions.BGremover.controller;
 
-import java.util.Map;
+// import java.util.Map;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +24,18 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public RemoveBgResponse createOrUpdateUser(@RequestBody UserDTO userDTO) {
-        UserDTO user = userService.saveUser(userDTO);
+    public RemoveBgResponse createOrUpdateUser(@RequestBody UserDTO userDTO, Authentication authentication) {
         try {
+
+            if (!authentication.getName().equals(userDTO.getClerkId())) {
+                return RemoveBgResponse.builder()
+                    .success(false)
+                    .data("You are not authorized to perform this action")
+                    .statusCode(HttpStatus.FORBIDDEN)
+                    .build();
+            }
+
+            UserDTO user = userService.saveUser(userDTO);
             return RemoveBgResponse.builder()
                 .success(true)
                 .statusCode(HttpStatus.CREATED)

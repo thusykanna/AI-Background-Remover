@@ -2,8 +2,12 @@ package thusySoftwareSolutions.BGremover.security;
 
 import java.security.PublicKey;
 import java.util.Base64;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -60,10 +64,16 @@ public class ClerkJwtAuthFilter extends OncePerRequestFilter {
                     .getBody();
 
             String clerkUserid = claims.getSubject();
-            
+
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    clerkUserid, null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    filterChain.doFilter(request, response);
 
         } catch (Exception e) {
-            // TODO: handle exception
+
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid JWT token");
+            return;
         }
 
         filterChain.doFilter(request, response);

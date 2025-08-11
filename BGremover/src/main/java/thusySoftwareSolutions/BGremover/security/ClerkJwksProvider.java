@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class ClerkJwksProvider {
 
-    @Value("${clerk.jwtk-url}")
+    @Value("${clerk.jwks-url}")
     private String jwksUrl;
 
     private final Map<String, PublicKey> keyCache = new HashMap<>();
