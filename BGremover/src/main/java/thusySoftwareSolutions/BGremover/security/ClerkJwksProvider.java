@@ -1,7 +1,8 @@
 package thusySoftwareSolutions.BGremover.security;
 
 import java.math.BigInteger;
-import java.net.URL;
+import java.net.URI;
+// import java.net.URL;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
@@ -36,7 +37,9 @@ public class ClerkJwksProvider {
 
     private void refreshKeys() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode jwks = mapper.readTree(new URL(jwksUrl));
+        // JsonNode jwks = mapper.readTree(new URL(jwksUrl));
+        URI uri = new URI(jwksUrl);
+        JsonNode jwks = mapper.readTree(uri.toURL());
 
         JsonNode keys = jwks.get("keys");
         for (JsonNode keyNode : keys) {

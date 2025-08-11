@@ -33,7 +33,7 @@ public class ClerkJwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, java.io.IOException {
-        String authHeader = request.getHeader("Autherization");
+        String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer")){
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Authorization header is missing or invalid");
