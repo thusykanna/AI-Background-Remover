@@ -2,17 +2,24 @@ import { use, useState } from "react";
 import { assets } from "../assets/assets";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
-import { SignedIn, SignedOut, UserButton, useClerk, useUser } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, UserButton, useAuth, useClerk, useUser } from "@clerk/clerk-react";
 
 const Menubar = () => {
 
     const [menuOpen, setMenuOpen] = useState(false);
     const { openSignIn, openSignUp } = useClerk();
     const { user } = useUser();
+    const {getToken} = useAuth();
 
     const openRegister = () => {
         setMenuOpen(false);
         openSignUp({});
+    }
+
+    const getData = async () => {
+        const token = await getToken();
+        console.log(token);
+        console.log(user.id);
     }
 
     const openLogin = () => {
@@ -45,11 +52,12 @@ const Menubar = () => {
                         <button className="flex items-center gap-2 bg-blue-100 px-4 sm:px-5 py-1 5 sm:py-2 5 rounded-full hover:scale-105 transition-all duration-500 cursor-pointer">
                             <img src={assets.credits} alt="credits" height={24} width={24} />
                             <p className="text-xs sm:text-sm font-medium text-gray-600">
-                                Credits: 0
+                                Credits: 0  
                             </p>
                         </button>
+                        <button onClick={getData}>Get the data</button>
                         <p className="text-gray-600 max-sm:hidden">
-                            hi, {user?.firstName}
+                            Hi, {user?.firstName}
                         </p>
                     </div>
                     <UserButton />

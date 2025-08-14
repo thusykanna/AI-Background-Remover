@@ -21,9 +21,9 @@ public class UserServiceimpl implements UserService {
         if (optionalUser.isPresent()) {
             UserEntity existingUser = optionalUser.get();
             existingUser.setEmail(userDTO.getEmail());
-            existingUser.setFirstname(userDTO.getFirstname());
-            existingUser.setFirstname(userDTO.getLastname());
-            existingUser.setFirstname(userDTO.getPhotoUrl());
+            existingUser.setFirstName(userDTO.getFirstName());
+            existingUser.setFirstName(userDTO.getLastName());
+            existingUser.setFirstName(userDTO.getPhotoUrl());
             if (userDTO.getCredits() != null) {
                 existingUser.setCredits(userDTO.getCredits());
             }
@@ -40,8 +40,8 @@ public class UserServiceimpl implements UserService {
                 .clerkId(newUser.getClerkId())
                 .credits(newUser.getCredits())
                 .email(newUser.getEmail())
-                .firstname(newUser.getFirstname())
-                .lastname(newUser.getLastname())
+                .firstName(newUser.getFirstName())
+                .lastName(newUser.getLastName())
                 // .photoUrl(newUser.getPhotoUrl())
                 .build();
     }
@@ -50,8 +50,8 @@ public class UserServiceimpl implements UserService {
         return UserEntity.builder()
                 .clerkId(userDTO.getClerkId())
                 .email(userDTO.getEmail())
-                .firstname(userDTO.getFirstname())
-                .lastname(userDTO.getLastname())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
                 .photoUrl(userDTO.getPhotoUrl())
                 .build();
     }

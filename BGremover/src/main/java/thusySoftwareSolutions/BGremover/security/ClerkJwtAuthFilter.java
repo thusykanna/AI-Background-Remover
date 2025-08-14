@@ -32,20 +32,26 @@ public class ClerkJwtAuthFilter extends OncePerRequestFilter {
     private final ClerkJwksProvider jwksProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, java.io.IOException {
-        String authHeader = request.getHeader("Authorization");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, java.io.IOException {
 
-        if (authHeader == null || !authHeader.startsWith("Bearer")){
+        // Allow CORS preflight requests to pass through
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Authorization header is missing or invalid");
             return;
-
         }
 
         try {
             String token = authHeader.substring(7); // Remove "Bearer " prefix
 
             // Extract the kid from the JWT header
-            String [] chunks = token.split("\\.");
+            String[] chunks = token.split("\\.");
             String headerJson = new String(Base64.getUrlDecoder().decode(chunks[0]));
             ObjectMapper mapper = new ObjectMapper();
             JsonNode headerNode = mapper.readTree(headerJson);
@@ -57,7 +63,7 @@ public class ClerkJwtAuthFilter extends OncePerRequestFilter {
             // Verify the JWT token
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(publicKey)
-                    .setAllowedClockSkewSeconds(60) // Allow a small clock skew
+                    .setAllowedClockSkewSeconds(60)
                     .requireIssuer(clerkIssuer)
                     .build()
                     .parseClaimsJws(token)
@@ -67,16 +73,11 @@ public class ClerkJwtAuthFilter extends OncePerRequestFilter {
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     clerkUserid, null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    filterChain.doFilter(request, response);
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
+            filterChain.doFilter(request, response);
         } catch (Exception e) {
-
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid JWT token");
-            return;
         }
-
-        filterChain.doFilter(request, response);
     }
-    
 }
