@@ -1,4 +1,3 @@
-```markdown
 # AI Background Remover (Spring Boot + React + Clerk)
 
 Full-stack scaffold for an AI background remover.
