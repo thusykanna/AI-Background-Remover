@@ -4,6 +4,7 @@ package thusySoftwareSolutions.BGremover.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,29 +25,33 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public RemoveBgResponse createOrUpdateUser(@RequestBody UserDTO userDTO, Authentication authentication) {
+    public ResponseEntity<?> createOrUpdateUser(@RequestBody UserDTO userDTO, Authentication authentication) {
+        RemoveBgResponse response = null;
         try {
 
             if (!authentication.getName().equals(userDTO.getClerkId())) {
-                return RemoveBgResponse.builder()
+                response = RemoveBgResponse.builder()
                     .success(false)
-                    .data("You are not authorized to perform this action")
+                    .data("User does not have permission to access the resource")
                     .statusCode(HttpStatus.FORBIDDEN)
                     .build();
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
             }
 
             UserDTO user = userService.saveUser(userDTO);
-            return RemoveBgResponse.builder()
+            response =RemoveBgResponse.builder()
                 .success(true)
-                .statusCode(HttpStatus.CREATED)
+                .statusCode(HttpStatus.OK)
                 .data(user)
                 .build();
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception exception) {
-            return RemoveBgResponse.builder()
+            response = RemoveBgResponse.builder()
                 .success(false)
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR)
                 .data(exception.getMessage())
                 .build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }
