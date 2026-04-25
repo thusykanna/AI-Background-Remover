@@ -1,6 +1,35 @@
+import { useContext } from "react";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
+import toast from "react-hot-toast";
 import { plans } from "../assets/assets";
+import { AppContext } from "../context/AppContext";
 
 const Pricing = () => {
+  const { backendUrl, setCredits } = useContext(AppContext);
+  const { isSignedIn, getToken, openSignIn } = useAuth();
+
+  const handleChoosePlan = async (planId) => {
+    if (!isSignedIn) {
+      openSignIn({});
+      return;
+    }
+    try {
+      const token = await getToken();
+      const { data } = await axios.post(
+        `${backendUrl}/users/credits?planId=${planId}`,
+        null,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        setCredits(data.data.credits);
+        toast.success("Credits added successfully!");
+      }
+    } catch {
+      toast.error("Failed to add credits. Please try again.");
+    }
+  };
+
   return (
     <div className="py-10 md:px-20 lg:px-20">
       <div className="container mx-auto px-4">
@@ -44,7 +73,9 @@ const Pricing = () => {
                     {plan.description}
                   </li>
                 </ul>
-                <button className="w-full py-3 px-6 text-center text-white font-semibold rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+                <button
+                  onClick={() => handleChoosePlan(plan.id)}
+                  className="w-full py-3 px-6 text-center text-white font-semibold rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 shadow-lg hover:from-purple-600 hover:to-indigo-600 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
                   Choose plan
                 </button>
               </div>

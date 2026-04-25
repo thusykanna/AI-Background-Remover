@@ -1,8 +1,26 @@
-import React from 'react'
-import { assets } from '../assets/assets'
-import toast from 'react-hot-toast'
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@clerk/clerk-react';
+import { assets } from '../assets/assets';
+import { AppContext } from '../context/AppContext';
 
 const Header = () => {
+    const { removeBg } = useContext(AppContext);
+    const { isSignedIn, getToken, openSignIn } = useAuth();
+    const navigate = useNavigate();
+
+    const handleFileChange = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        if (!isSignedIn) {
+            openSignIn({});
+            return;
+        }
+        navigate('/result');
+        await removeBg(file, getToken);
+        e.target.value = '';
+    };
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
 
@@ -31,8 +49,8 @@ const Header = () => {
                 </p>
 
                 <div>
-                    <input type="file" accept='"image/*' id='upload1' hidden />
-                    <label htmlFor="" className="bg-black text-white font-medium px-8 py-4 rounded-full hover:opacity-90 transition-transform hover:scalable-105 text-lg">
+                    <input type="file" accept="image/*" id='upload1' hidden onChange={handleFileChange} />
+                    <label htmlFor="upload1" className="bg-black text-white font-medium px-8 py-4 rounded-full hover:opacity-90 transition-transform hover:scale-105 text-lg cursor-pointer">
                        Upload your image
                     </label>
                 </div>

@@ -8,7 +8,7 @@ const UserSyncHandler = () => {
   const { isLoaded, isSignedIn, getToken } = useAuth();
   const { user } = useUser();
   const [synced, setSynced] = useState(false);
-  const { backendUrl } = useContext(AppContext);
+  const { backendUrl, loadUser } = useContext(AppContext);
 
   useEffect(() => {
     const saveUser = async () => {
@@ -30,8 +30,8 @@ const UserSyncHandler = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        setSynced(true); // prevent re-posting
-        // TODO: update the user credits
+        setSynced(true);
+        await loadUser(getToken);
       } catch (error) {
         console.error("User sync failed", error);
         toast.error("User sync failed. Please try again");
@@ -39,7 +39,7 @@ const UserSyncHandler = () => {
     };
 
     saveUser();
-  }, [isLoaded, isSignedIn, getToken, user, synced]);
+  }, [isLoaded, isSignedIn, getToken, user, synced, loadUser]);
 
   return null;
 };

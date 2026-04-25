@@ -1,4 +1,5 @@
 import Home from "./pages/Home";
+import Result from "./pages/Result";
 import Menubar from "./components/Menubar";
 import Footer from "./components/Footer";
 import { Routes, Route } from "react-router-dom";
@@ -14,6 +15,7 @@ const App = () => {
       <Toaster/>
       <Routes>
         <Route path="/" element={<Home/>}/>
+        <Route path="/result" element={<Result/>}/>
       </Routes>
       <Footer/>
     </div>

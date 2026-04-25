@@ -22,13 +22,13 @@ public class UserServiceimpl implements UserService {
             UserEntity existingUser = optionalUser.get();
             existingUser.setEmail(userDTO.getEmail());
             existingUser.setFirstName(userDTO.getFirstName());
-            existingUser.setFirstName(userDTO.getLastName());
-            existingUser.setFirstName(userDTO.getPhotoUrl());
+            existingUser.setLastName(userDTO.getLastName());
+            existingUser.setPhotoUrl(userDTO.getPhotoUrl());
             if (userDTO.getCredits() != null) {
                 existingUser.setCredits(userDTO.getCredits());
             }
             existingUser = userRepository.save(existingUser);
-            mapToDTO(existingUser);
+            return mapToDTO(existingUser);
         }
         UserEntity newUser = mapToEntity(userDTO);
         userRepository.save(newUser);
@@ -42,8 +42,24 @@ public class UserServiceimpl implements UserService {
                 .email(newUser.getEmail())
                 .firstName(newUser.getFirstName())
                 .lastName(newUser.getLastName())
-                // .photoUrl(newUser.getPhotoUrl())
+                .photoUrl(newUser.getPhotoUrl())
                 .build();
+    }
+
+    @Override
+    public UserDTO addCredits(String clerkId, int creditsToAdd) {
+        UserEntity user = userRepository.findByClerkId(clerkId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setCredits((user.getCredits() == null ? 0 : user.getCredits()) + creditsToAdd);
+        userRepository.save(user);
+        return mapToDTO(user);
+    }
+
+    @Override
+    public UserDTO getUserByClerkId(String clerkId) {
+        UserEntity user = userRepository.findByClerkId(clerkId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return mapToDTO(user);
     }
 
     private UserEntity mapToEntity(UserDTO userDTO) {
